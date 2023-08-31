@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+#mySidebar{
+  background-color: #343a40;
+  color: white;
+}
+.mySidebars:hover{
+  background-color: #464d57;
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Infosys</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="{{ url_for('static', filename='sidebar.css') }}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    function w3_open() {
+  document.getElementById("main").style.marginLeft = "25%";
+  document.getElementById("mySidebar").style.width = "25%";
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("openNav").style.display = 'none';
+}
+function w3_close() {
+  document.getElementById("main").style.marginLeft = "0%";
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("openNav").style.display = "inline-block";
+}
+    </script>
+</head>
+<div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+  <button onclick="w3_close()" class="w3-bar-item w3-large">&times; Close</button>
+  <a href="/tata" class="w3-bar-item w3-button">Tata Motors</a>
+  <a href="/hdfc" class="w3-bar-item w3-button">HDFC Bank</a>
+  <a href="/reliance" class="w3-bar-item w3-button">Reliance</a>
+  <a href="/sbi" class="w3-bar-item w3-button">SBI Bank</a>
+  <a href="/asianp" class="w3-bar-item w3-button">Asian Paints</a>
+  <a href="/icici" class="w3-bar-item w3-button">ICICI Bank</a>
+  <a href="/infy" class="w3-bar-item w3-button">Infosys Limited</a>
+  <a href="/tcs" class="w3-bar-item w3-button">Tata Consultancy Services</a>
+</div>
+
+<div id = 'main'>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="w3-transparent">
+  <button class="w3-button w3-large w3-transparent w3-hover-blue w3-text-white" onclick="w3_open()">☰</button>
+    </div>
+  <a class="navbar-brand" href="/home" style="padding-left:5px;">tradEasy</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href={{ url_for('search') }}>Lookup</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Portfolio Management
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href={{ url_for('trade') }}>Create Portfolio</a>
+          <a class="dropdown-item" href={{ url_for('dashboard') }}>Manage Portfolio</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">What is a Portfolio?</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+     <div>
+        <h4 style="color:white;padding-left:570px;padding-top:20px;">Sentiment Analysis</h4>
+        <p style="color:white;size:18px;padding-left:320px;">{{data}}</p><br>
+        <h4 style="padding-left:470px;color:white">Prediction based on Historic Stock Prices</h4>
+    </div>
+<div class="container">
+    <div class="row">
+        <div class="span9">
+            <div class="graph-0" id="bargraph">
+                <script>
+                    var graphs = {{plot | safe}};
+                    Plotly.plot('bargraph',graphs,{});
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<body style="background-color: rgb(17, 17, 17);">
+<div style="margin: auto;width: 50%;text-align:center;">
+    <h5 style="color:white;">Infosys</h5>
+    <p style="color:white;">Scrip ID: INFY</p>
+    <br>
+    <a class="btn btn-lg btn-success" role="button" href={{ url_for('trade') }} >Buy</a>
+    <a class="btn btn-lg btn-danger" role="button" href={{ url_for('trade') }} >Sell</a>
+    <br><br>
+</div>
+</body>
+</html>
